@@ -52,6 +52,9 @@ type LifeEntity struct {
 type LifeCycle struct {
     mu       sync.RWMutex
     entities map[string]*LifeEntity
+    observers   []LifeCycleObserver    // 新增：观察者列表
+    entityLocks map[string]*sync.RWMutex  // 新增：实体级别锁
+    lockShards  []*sync.RWMutex          // 新增：分片锁
     
     // 关联系统
     wuXing   *WuXing
@@ -68,12 +71,21 @@ type LifeCycle struct {
 func NewLifeCycle(ctx *core.DaoContext, wx *WuXing, tg *TianGan, dz *DiZhi) *LifeCycle {
     return &LifeCycle{
         entities: make(map[string]*LifeEntity),
+        observers:   make([]LifeCycleObserver, 0),
+        entityLocks: make(map[string]*sync.RWMutex),
+        lockShards:  make([]*sync.RWMutex, 32), // 32个分片锁
         wuXing:   wx,
         tianGan:  tg,
         diZhi:    dz,
         ctx:      ctx,
         done:     make(chan struct{}),
     }
+     // 初始化分片锁
+    for i := range lc.lockShards {
+        lc.lockShards[i] = &sync.RWMutex{}
+    }
+    
+    return lc
 }
 
 // CreateEntity 创建生命实体
@@ -171,6 +183,7 @@ func (lc *LifeCycle) processCycle() {
 func (lc *LifeCycle) updateEntityState(entity *LifeEntity, now time.Time) {
     age := now.Sub(entity.Birth)
     entity.Duration = age
+    oldStage := entity.Stage
 
     // 基于年龄和生命力确定阶段
     totalVitality := lc.calculateTotalVitality(entity)
@@ -188,6 +201,19 @@ func (lc *LifeCycle) updateEntityState(entity *LifeEntity, now time.Time) {
         entity.Stage = StagePeak
     default:
         entity.Stage = StageBirth
+    }
+    // 如果状态发生变化，通知观察者
+    if oldStage != entity.Stage {
+        event := LifeEvent{
+            EntityID:   entity.ID,
+            OldStage:   oldStage,
+            NewStage:   entity.Stage,
+            TimeStamp:  now,
+        }
+        
+        for _, observer := range lc.observers {
+            go observer.OnStateChange(event)
+        }
     }
 }
 
