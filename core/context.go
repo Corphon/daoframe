@@ -99,9 +99,23 @@ func (dc *DaoContext) AdjustAttribute(yinDelta, yangDelta int16) {
     } else if newYang > 100 {
         newYang = 100
     }
+
+    // 添加阴阳平衡检查
+    if !isBalanceValid(uint8(newYin), uint8(newYang)) {
+        return ErrInvalidBalance
+    }
     
     dc.attributes.Yin = uint8(newYin)
     dc.attributes.Yang = uint8(newYang)
+}
+
+// [新增] 阴阳平衡检查
+func isBalanceValid(yin, yang uint8) bool {
+    diff := int(yin) - int(yang)
+    if diff < 0 {
+        diff = -diff
+    }
+    return diff <= 30 // 允许适度的不平衡
 }
 
 // GetAttribute 获取阴阳属性
