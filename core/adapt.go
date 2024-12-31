@@ -7,6 +7,7 @@ import (
     "errors"
     "sync"
     "time"
+    "github.com/Corphon/daoframe/core/state"  // 新的导入
 )
 
 // AdaptHandler 定义适应性处理函数类型
@@ -39,6 +40,7 @@ type AdaptSystem struct {
     environmentState  map[string]int
     adaptHistory     []AdaptiveAction
     balanceFactors   map[string]float64
+    currentState state.State  // 新增字段用于跟踪系统状态
 }
 
 // NewAdaptSystem 创建新的自适应系统
@@ -49,6 +51,7 @@ func NewAdaptSystem(interval time.Duration) *AdaptSystem {
         interval:   interval,
         yinHandler: make([]AdaptHandler, 0),
         yangHandler: make([]AdaptHandler, 0),
+        currentState: state.StateInactive,  // 初始化状态
     }
 }
 
@@ -88,23 +91,33 @@ func (as *AdaptSystem) SetMode(mode AdaptMode) {
 // Start 启动自适应系统
 func (as *AdaptSystem) Start(ctx context.Context) error {
     as.mu.Lock()
-    if as.active {
+    if as.currentState == state.StateActive {
         as.mu.Unlock()
         return errors.New("adapt system is already running")
     }
+    
+    if !state.ValidateTransition(as.currentState, state.StateActive) {
+        as.mu.Unlock()
+        return errors.New("invalid state transition")
+    }
+    
     as.active = true
+    as.currentState = state.StateActive
     as.lastAdapt = time.Now()
     as.mu.Unlock()
 
     go as.run(ctx)
     return nil
 }
-
 // Stop 停止自适应系统
 func (as *AdaptSystem) Stop() {
     as.mu.Lock()
-    as.active = false
-    as.mu.Unlock()
+    defer as.mu.Unlock()
+    
+    if state.ValidateTransition(as.currentState, state.StateInactive) {
+        as.active = false
+        as.currentState = state.StateInactive
+    }
 }
 
 // run 运行自适应循环
