@@ -7,7 +7,7 @@ import (
     "time"
     "errors"
     
-    "github.com/Corphon/daoframe/core"
+    "github.com/Corphon/daoframe/core/state" 
 )
 
 var (
@@ -37,7 +37,7 @@ type YinYang struct {
     yin     Polarity
     yang    Polarity
     ctx     *core.DaoContext
-    state   core.State
+    state   state.State
     
     // 变化速率 (每秒)
     changeRate float64
@@ -61,7 +61,7 @@ func NewYinYang(ctx *core.DaoContext) *YinYang {
             Nature:   NatureYang,
             LastSync: time.Now(),
         },
-        state:      core.StateActive,
+        state:      state.StateActive,
         changeRate: 1.0,
         changes:    make(chan struct{}, 1),
         done:       make(chan struct{}),
