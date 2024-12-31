@@ -32,8 +32,13 @@ type AdaptSystem struct {
     active      bool
     interval    time.Duration
     lastAdapt   time.Time
-    yinHandler  []AdaptHandler // 阴性处理器
-    yangHandler []AdaptHandler // 阳性处理器
+    yinHandler  []AdaptHandler
+    yangHandler []AdaptHandler
+    // 新增字段
+    adaptiveThreshold float64
+    environmentState  map[string]int
+    adaptHistory     []AdaptiveAction
+    balanceFactors   map[string]float64
 }
 
 // NewAdaptSystem 创建新的自适应系统
