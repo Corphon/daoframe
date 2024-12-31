@@ -2,10 +2,6 @@
 # DaoFrame
 
 <p align="center">
-  <img src="assets/daoframe-logo.png" alt="DaoFrame Logo" width="200"/>
-</p>
-
-<p align="center">
   <a href="https://golang.org/dl">
     <img src="https://img.shields.io/badge/Go-1.20+-00ADD8?style=flat&logo=go" alt="go version">
   </a>
