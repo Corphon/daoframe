@@ -1,4 +1,3 @@
-
 # DaoFrame
 
 <p align="center">
@@ -15,41 +14,41 @@
 
 > A highly modular, flexible, and concurrent framework inspired by Daoist philosophy. Designed for scalable, high-performance applications, it provides efficient lifecycle management, task scheduling, and state coordination for distributed systems, microservices, and IoT.
 
-## 🌟 特性
+## 🌟 Features
 
-- **道法自然的设计理念**
-  - 基于阴阳五行的状态管理
-  - 自适应的生命周期系统
-  - 灵活的能量流转机制
+- **Design Philosophy Based on Natural Law**
+  - State management based on Yin-Yang and Five Elements
+  - Adaptive lifecycle system
+  - Flexible energy flow mechanism
 
-- **高性能并发处理**
-  - 多层次锁机制
-  - 分片锁优化
-  - 异步事件处理
+- **High-Performance Concurrency**
+  - Multi-level locking mechanism
+  - Optimized shard locks
+  - Asynchronous event handling
 
-- **完整的生命周期管理**
-  - 实体创建与销毁
-  - 状态转换与验证
-  - 资源自动回收
+- **Complete Lifecycle Management**
+  - Entity creation and destruction
+  - State transition and validation
+  - Automatic resource recycling
 
-- **灵活的配置系统**
-  - 支持多环境配置
-  - 动态配置更新
-  - 完整的参数验证
+- **Flexible Configuration System**
+  - Multi-environment support
+  - Dynamic configuration updates
+  - Comprehensive parameter validation
 
-## 🚀 快速开始
+## 🚀 Quick Start
 
-### 系统要求
-- Go 1.20 或更高版本
-- 支持并发的操作系统（Linux/macOS/Windows）
+### Requirements
+- Go 1.20 or higher
+- Concurrent-capable operating system (Linux/macOS/Windows)
 
-### 安装
+### Installation
 
 ```bash
 go get github.com/Corphon/daoframe
 ```
 
-### 基础使用
+### Basic Usage
 
 ```go
 package main
@@ -60,57 +59,57 @@ import (
 )
 
 func main() {
-    // 创建太极，实现"道生一"
+    // Create TaiJi, implementing "Dao generates One"
     taiji := core.NewTaiJi()
     
-    // 生成阴阳，实现"一生二"
+    // Generate Yin-Yang, implementing "One generates Two"
     yinyang, err := taiji.Generate()
     if err != nil {
         panic(err)
     }
     
-    // 启动生命周期系统
+    // Start lifecycle system
     if err := yinyang.Start(context.Background()); err != nil {
         panic(err)
     }
     
-    // ... 后续操作
+    // ... subsequent operations
 }
 ```
 
-## 📚 框架结构
+## 📚 Framework Structure
 
 ```
 daoframe/
-├── core/                 # 核心实现层
-│   ├── origin.go        # 道的本源实现
-│   ├── force/           # 力的作用系统
-│   │   └── force.go     # 基本力定义
-│   └── state/           # 状态管理
+├── core/                 # Core Implementation Layer
+│   ├── origin.go        # Dao Origin Implementation
+│   ├── force/           # Force System
+│   │   └── force.go     # Basic Force Definitions
+│   └── state/           # State Management
 │
-├── model/               # 模型层
-│   ├── bagua.go        # 八卦系统
-│   ├── wuxing.go       # 五行系统
-│   ├── yinyang.go      # 阴阳系统
-│   ├── dizhi.go        # 地支系统
-│   └── wuxing_effects.go # 五行效果系统
+├── model/               # Model Layer
+│   ├── bagua.go        # Eight Trigrams System
+│   ├── wuxing.go       # Five Elements System
+│   ├── yinyang.go      # Yin-Yang System
+│   ├── dizhi.go        # Earthly Branches System
+│   └── wuxing_effects.go # Five Elements Effects System
 │
-├── system/              # 系统集成层
-│   ├── universe.go     # 宇宙系统：整合所有子系统
-│   └── evolution.go    # 演化系统：处理系统演化
+├── system/              # System Integration Layer
+│   ├── universe.go     # Universe System: Integrates All Subsystems
+│   └── evolution.go    # Evolution System: Handles System Evolution
 │
-├── lifecycle/           # 生命周期管理
-│   └── manager.go      # 生命周期管理器
+├── lifecycle/           # Lifecycle Management
+│   └── manager.go      # Lifecycle Manager
 │
-├── config/             # 配置管理
-│   └── config.go       # 核心配置定义
+├── config/             # Configuration Management
+│   └── config.go       # Core Configuration Definitions
 │
-└── basic/              # 基础组件
-    ├── timesystem/    # 时间系统
-    └── patterns/      # 模式定义
+└── basic/              # Basic Components
+    ├── timesystem/    # Time System
+    └── patterns/      # Pattern Definitions
 ```
 
-## 🔧 高级配置
+## 🔧 Advanced Configuration
 
 ```go
 config := &config.CoreConfig{
@@ -126,44 +125,44 @@ config := &config.CoreConfig{
 }
 ```
 
-## 📖 详细文档
+## 📖 Documentation
 
-访问我们的 [Wiki](https://github.com/Corphon/daoframe/wiki) 获取更详细的文档：
+Visit our [Wiki](https://github.com/Corphon/daoframe/wiki) for detailed documentation:
 
-- [架构设计](https://github.com/Corphon/daoframe/wiki/Architecture)
-- [API 参考](https://github.com/Corphon/daoframe/wiki/API-Reference)
-- [最佳实践](https://github.com/Corphon/daoframe/wiki/Best-Practices)
-- [示例代码](https://github.com/Corphon/daoframe/wiki/Examples)
+- [Architecture Design](https://github.com/Corphon/daoframe/wiki/Architecture)
+- [API Reference](https://github.com/Corphon/daoframe/wiki/API-Reference)
+- [Best Practices](https://github.com/Corphon/daoframe/wiki/Best-Practices)
+- [Examples](https://github.com/Corphon/daoframe/wiki/Examples)
 
-## 🤝 贡献指南
+## 🤝 Contributing
 
-我们欢迎任何形式的贡献！如果您想为 DaoFrame 做出贡献：
+We welcome all contributions! If you'd like to contribute to DaoFrame:
 
-1. Fork 这个仓库
-2. 创建您的特性分支 (`git checkout -b feature/AmazingFeature`)
-3. 提交您的更改 (`git commit -m 'Add some AmazingFeature'`)
-4. 推送到分支 (`git push origin feature/AmazingFeature`)
-5. 打开一个 Pull Request
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
-更多细节请参考 [CONTRIBUTING.md](CONTRIBUTING.md)
+For more details, please refer to [CONTRIBUTING.md](CONTRIBUTING.md)
 
-## 📄 开源协议
+## 📄 License
 
-本项目采用 Apache 2.0 协议 - 查看 [LICENSE](LICENSE) 文件了解更多细节
+This project is licensed under the Apache 2.0 License - see the [LICENSE](LICENSE) file for details
 
-## 🙏 感谢
+## 🙏 Acknowledgments
 
-感谢所有为这个项目做出贡献的开发者们！
+Thanks to all the developers who have contributed to this project!
 
-## 📬 联系我们
+## 📬 Contact
 
-- 提交 Issue: [GitHub Issues](https://github.com/Corphon/daoframe/issues)
-- 邮件联系: [your-email@example.com]
+- Submit Issues: [GitHub Issues](https://github.com/Corphon/daoframe/issues)
+- Email: [your-email@example.com]
 
-## 🎯 路线图
+## 🎯 Roadmap
 
-- [ ] 分布式事务支持
-- [ ] 云原生适配
-- [ ] WebAssembly 支持
-- [ ] 更多中间件集成
+- [ ] Distributed Transaction Support
+- [ ] Cloud-Native Adaptation
+- [ ] WebAssembly Support
+- [ ] More Middleware Integration
 ```
