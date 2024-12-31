@@ -4,6 +4,8 @@ package core
 
 import (
     "context"
+    "github.com/Corphon/daoframe/core/state"  // 新的导入
+    "github.com/Corphon/daoframe/core/force"  // 新的导入
 )
 
 // Origin 代表"道"的本源
@@ -16,7 +18,7 @@ type Origin struct {
 // 太极 - 表示最初的统一状态
 type TaiJi struct {
     origin *Origin
-    state  State
+    state  state.State
 }
 
 // 创建太极，实现"道生一"
@@ -29,13 +31,13 @@ func NewTaiJi() *TaiJi {
     
     return &TaiJi{
         origin: origin,
-        state:  StateInactive,
+        state:  state.StateInactive,
     }
 }
 
 // Generate 生成万物的起点，对应"道生一"
 func (t *TaiJi) Generate() (*YinYang, error) {
-    if t.state != StateInactive {
+    if t.state != state.StateInactive {
         return nil, ErrInvalidState
     }
     
@@ -49,7 +51,7 @@ func (t *TaiJi) Generate() (*YinYang, error) {
         return nil, err
     }
     
-    t.state = StateActive
+    t.state = state.StateActive
     
     // 返回阴阳二气，为"一生二"做准备
     return NewYinYang(t.origin), nil
@@ -60,15 +62,4 @@ const (
     DefaultInterval = time.Second * 1 // 基本时间单位
     MaximumForce   = 100             // 最大作用力
     MinimumForce   = 1               // 最小作用力
-)
-
-// Force 表示作用力
-type Force uint8
-
-// 定义基本作用力
-const (
-    ForceCreate Force = iota // 生之力
-    ForceDestroy            // 灭之力
-    ForceTransform          // 变之力
-    ForceBalance           // 衡之力
 )
