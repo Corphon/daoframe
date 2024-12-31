@@ -25,17 +25,6 @@ const (
     ForceBalance                  // 衡之力
 )
 
-// State 表示系统状态
-type State uint8
-
-const (
-    StateVoid      State = iota // 虚无状态
-    StateInactive              // 未激活
-    StateActive               // 激活
-    StatePaused              // 暂停
-    StateTerminated         // 终止
-)
-
 // DaoSource 定义了道源的核心接口
 type DaoSource interface {
     // Initialize 初始化道源，从虚无中生一
