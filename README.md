@@ -82,16 +82,32 @@ func main() {
 
 ```
 daoframe/
-├── core/           # 核心实现
-│   ├── origin.go   # 框架本源
-│   ├── context.go  # 上下文管理
-│   └── adapt.go    # 自适应系统
-├── model/          # 模型定义
-│   ├── wuxing.go   # 五行系统
-│   ├── yinyang.go  # 阴阳系统
-│   └── dizhi.go    # 地支系统
-├── config/         # 配置管理
-└── system/         # 系统集成
+├── core/                 # 核心实现层
+│   ├── origin.go        # 道的本源实现
+│   ├── force/           # 力的作用系统
+│   │   └── force.go     # 基本力定义
+│   └── state/           # 状态管理
+│
+├── model/               # 模型层
+│   ├── bagua.go        # 八卦系统
+│   ├── wuxing.go       # 五行系统
+│   ├── yinyang.go      # 阴阳系统
+│   ├── dizhi.go        # 地支系统
+│   └── wuxing_effects.go # 五行效果系统
+│
+├── system/              # 系统集成层
+│   ├── universe.go     # 宇宙系统：整合所有子系统
+│   └── evolution.go    # 演化系统：处理系统演化
+│
+├── lifecycle/           # 生命周期管理
+│   └── manager.go      # 生命周期管理器
+│
+├── config/             # 配置管理
+│   └── config.go       # 核心配置定义
+│
+└── basic/              # 基础组件
+    ├── timesystem/    # 时间系统
+    └── patterns/      # 模式定义
 ```
 
 ## 🔧 高级配置
