@@ -6,26 +6,36 @@ import (
     "fmt"
 )
 
-// State 统一的状态定义
-type State uint8
+// BaseState 基础状态
+type BaseState uint8
 
 const (
-    // 基础状态
-    StateVoid      State = iota  // 虚无状态
-    StateInactive               // 未激活
-    StateActive                // 激活
-    StatePaused               // 暂停
-    StateTerminated          // 终止
-
-    // 生命周期状态
-    StageOrigin               // 起源
-    StageBirth               // 诞生
-    StageGrowth              // 成长
-    StagePeak                // 巅峰
-    StageDecline             // 衰退
-    StageEnd                 // 终末
-    StageReturn              // 返归
+    StateVoid BaseState = iota
+    StateInactive
+    StateActive
+    StatePaused
+    StateTerminated
 )
+
+// LifecycleState 生命周期状态
+type LifecycleState uint8
+
+const (
+    StageOrigin LifecycleState = iota
+    StageBirth
+    StageGrowth
+    StagePeak
+    StageDecline
+    StageEnd
+    StageReturn
+)
+
+// 新增状态管理器
+type StateManager struct {
+    baseState      BaseState
+    lifecycleState LifecycleState
+    mu            sync.RWMutex
+}
 
 // StateTransitionMap 定义所有可能的状态转换
 var StateTransitionMap = map[State][]State{
