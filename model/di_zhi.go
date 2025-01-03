@@ -53,14 +53,28 @@ type DiZhi struct {
     tianGan  *TianGan
     wuXing   *WuXing
     
-    // 周期控制
-    cycleTime time.Duration
-    lastCycle time.Time
+    // 改进周期控制
+    cycleManager struct {
+        sync.RWMutex
+        time      time.Duration
+        last      time.Time
+        schedule  map[time.Weekday][]CycleEvent
+        active    bool
+    }
     
-    // 系统状态
-    ctx     *core.DaoContext
-    running bool
-    done    chan struct{}
+    // 状态管理
+    state      *state.StateManager
+    ctx        *core.DaoContext
+    metrics    *Metrics
+    done       chan struct{}
+}
+
+// 新增周期事件
+type CycleEvent struct {
+    Time     time.Time
+    Branch   Zhi
+    Action   CycleAction
+    Duration time.Duration
 }
 
 // NewDiZhi 创建地支系统
