@@ -28,6 +28,7 @@ const (
 // AdaptSystem 实现自适应系统
 type AdaptSystem struct {
     mu          sync.RWMutex
+    stateManager *state.StateManager  // 使用状态管理器
     handlers    map[string]AdaptHandler
     mode        AdaptMode
     active      bool
@@ -91,6 +92,11 @@ func (as *AdaptSystem) SetMode(mode AdaptMode) {
 // Start 启动自适应系统
 func (as *AdaptSystem) Start(ctx context.Context) error {
     as.mu.Lock()
+    defer as.mu.Unlock()
+
+    if err := as.stateManager.TransitTo(state.StateActive); err != nil {
+        return fmt.Errorf("failed to start adapt system: %w", err)
+    }
     if as.currentState == state.StateActive {
         as.mu.Unlock()
         return errors.New("adapt system is already running")
