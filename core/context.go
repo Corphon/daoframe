@@ -33,6 +33,8 @@ type DaoContext struct {
     attributes *DaoAttribute            // 阴阳属性
     values     map[string]interface{}   // 存储值
     birth      time.Time                // 创建时间
+    timeout    time.Duration            // 新增超时控制
+    cancel    context.CancelFunc        // 新增取消函数
 }
 
 // NewDaoContext 创建新的道家上下文
