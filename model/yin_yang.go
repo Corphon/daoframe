@@ -42,9 +42,32 @@ type YinYang struct {
     // 变化速率 (每秒)
     changeRate float64
     
-    // 事件通道
-    changes chan struct{}
-    done    chan struct{}
+    // 新增平衡控制
+    balanceCtrl struct {
+        threshold float64
+        interval  time.Duration
+        lastCheck time.Time
+    }
+    
+    // 事件通知
+    observers []Observer
+    changes   chan Event
+    done      chan struct{}
+}
+
+type EventType uint8
+
+const (
+    EventBalance EventType = iota
+    EventImbalance
+    EventExtreme
+)
+
+// 新增事件系统
+type Event struct {
+    Type      EventType
+    Timestamp time.Time
+    Data      interface{}
 }
 
 // NewYinYang 创建新的阴阳实例
