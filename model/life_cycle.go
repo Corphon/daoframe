@@ -55,6 +55,11 @@ type LifeCycle struct {
     observers   []LifeCycleObserver    // 新增：观察者列表
     entityLocks map[string]*sync.RWMutex  // 新增：实体级别锁
     lockShards  []*sync.RWMutex          // 新增：分片锁
+
+    // 改进生命周期管理
+    stateValidator StateValidator
+    transitionHooks map[LifeStage][]TransitionHook
+    entityMetrics   map[string]*EntityMetrics
     
     // 关联系统
     wuXing   *WuXing
@@ -66,6 +71,15 @@ type LifeCycle struct {
     running  bool
     done     chan struct{}
 }
+
+// 新增状态验证器
+type StateValidator interface {
+    ValidateTransition(from, to LifeStage) error
+    ValidateEntity(entity *LifeEntity) error
+}
+
+// 新增转换钩子
+type TransitionHook func(*LifeEntity, LifeStage) error
 
 // NewLifeCycle 创建生命周期系统
 func NewLifeCycle(ctx *core.DaoContext, wx *WuXing, tg *TianGan, dz *DiZhi) *LifeCycle {
