@@ -1,13 +1,63 @@
+//system/universe.go
 package system
 
 // Universe 宇宙系统
 type Universe struct {
-    ctx        *core.DaoContext
-    timeSystem *basic.TimeSystem
-    bagua      *basic.BaGua
-    wuXing     *basic.WuXing
-    yinYang    *basic.YinYang
-    lifecycle  *lifecycle.Manager
+     mu           sync.RWMutex
+    ctx          *core.DaoContext
+    config       *SystemConfig
+    
+    // 核心系统组件
+    timeSystem   *TimeSystem
+    bagua        *model.BaGua
+    wuXing       *model.WuXing
+    yinYang      *model.YinYang
+    lifecycle    *LifecycleManager
+    
+    // 监控和控制
+    state        SystemState
+    metrics      *UniverseMetrics
+    eventBus     *EventBus
+    scheduler    *Scheduler
+    
+    // 系统同步
+    wg           sync.WaitGroup
+    done         chan struct{}
+}
+
+// UniverseMetrics 宇宙系统指标
+type UniverseMetrics struct {
+    StartTime        time.Time
+    CycleCount       uint64
+    InteractionCount uint64
+    ErrorCount       uint64
+    LastError        error
+    Components       map[string]*ComponentMetrics
+}
+
+// 新增方法
+func (u *Universe) Start(ctx context.Context) error {
+    u.mu.Lock()
+    defer u.mu.Unlock()
+    
+    if u.state != SystemStateInactive {
+        return ErrInvalidState
+    }
+    
+    u.state = SystemStateStarting
+    
+    // 初始化组件
+    if err := u.initializeComponents(); err != nil {
+        return err
+    }
+    
+    // 启动调度器
+    if err := u.scheduler.Start(); err != nil {
+        return err
+    }
+    
+    u.state = SystemStateRunning
+    return nil
 }
 
 // Evolution 演化控制
