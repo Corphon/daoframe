@@ -52,6 +52,15 @@ type WuXing struct {
     ctx      *core.DaoContext
     cycles   chan struct{}
     done     chan struct{}
+
+    stateManager *state.StateManager
+    relationships map[Phase]map[Phase]Relationship
+    cycleControl struct {
+        sync.RWMutex
+        active bool
+        lastCycle time.Time
+        errors []error
+    }
 }
 
 // NewWuXing 创建新的五行系统
@@ -219,6 +228,17 @@ func (wx *WuXing) GetElementStrength(phase Phase) (uint8, error) {
     element.mu.RLock()
     defer element.mu.RUnlock()
     return element.strength, nil
+}
+func (wx *WuXing) ValidateRelationship(from, to Phase) error {
+    wx.mu.RLock()
+    defer wx.mu.RUnlock()
+    
+    rel, exists := wx.relationships[from][to]
+    if !exists {
+        return ErrInvalidPhase
+    }
+    
+    return nil
 }
 
 // Close 关闭五行系统
