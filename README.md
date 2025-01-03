@@ -80,49 +80,13 @@ func main() {
 ## 📚 Framework Structure
 
 ```
-daoframe/
-├── core/                 # Core Implementation Layer
-│   ├── origin.go        # Dao Origin Implementation
-│   ├── force/           # Force System
-│   │   └── force.go     # Basic Force Definitions
-│   └── state/           # State Management
-│
-├── model/               # Model Layer
-│   ├── bagua.go        # Eight Trigrams System
-│   ├── wuxing.go       # Five Elements System
-│   ├── yinyang.go      # Yin-Yang System
-│   ├── dizhi.go        # Earthly Branches System
-│   └── wuxing_effects.go # Five Elements Effects System
-│
-├── system/              # System Integration Layer
-│   ├── universe.go     # Universe System: Integrates All Subsystems
-│   └── evolution.go    # Evolution System: Handles System Evolution
-│
-├── lifecycle/           # Lifecycle Management
-│   └── manager.go      # Lifecycle Manager
-│
-├── config/             # Configuration Management
-│   └── config.go       # Core Configuration Definitions
-│
-└── basic/              # Basic Components
-    ├── timesystem/    # Time System
-    └── patterns/      # Pattern Definitions
+
 ```
 
 ## 🔧 Advanced Configuration
 
 ```go
-config := &config.CoreConfig{
-    Debug:          true,
-    MaxGoroutines:  10000,
-    DefaultTimeout: time.Second * 30,
-    
-    LifeCycleConfig: config.LifeCycleConfig{
-        CleanupInterval: time.Hour,
-        MaxInactiveTime: time.Hour * 24,
-        ShardCount:      32,
-    },
-}
+
 ```
 
 ## 📖 Documentation
