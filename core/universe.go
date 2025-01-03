@@ -54,6 +54,25 @@ func NewUniverse(ctx context.Context) *Universe {
 
 // Evolve 开始宇宙演化
 func (u *Universe) Evolve() error {
+    u.mu.Lock()
+    defer u.mu.Unlock()
+
+    steps := []struct {
+        name string
+        fn   func() error
+    }{
+        {"太极生成", u.generateTaiJi},
+        {"阴阳分化", u.generateYinYang},
+        {"三态演化", u.generateTriad},
+        {"五行生成", u.generateWuXing},
+    }
+
+    for _, step := range steps {
+        if err := step.fn(); err != nil {
+            return fmt.Errorf("%s failed: %w", step.name, err)
+        }
+    }
+    
     // 1. 无极 -> 太极（道生一）
     if err := u.generateTaiJi(); err != nil {
         return err
@@ -75,7 +94,7 @@ func (u *Universe) Evolve() error {
     }
 
     // 5. 五行生万物
-    go u.generateWanWu()
+    go u.generateWanWu() // 异步生成万物
 
     return nil
 }
