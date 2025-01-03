@@ -13,8 +13,15 @@ type Origin struct {
     essence *DaoContext    // 道之精髓
     energy  *AdaptSystem   // 道之能量
     form    *BaseDaoSource // 道之形态
+    components []Component
+    mu         sync.RWMutex
+    done       chan struct{}
 }
-
+type Component interface {
+    Init(ctx context.Context) error
+    Start(ctx context.Context) error
+    Stop(ctx context.Context) error
+}
 // 太极 - 表示最初的统一状态
 type TaiJi struct {
     origin *Origin
