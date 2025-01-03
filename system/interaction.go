@@ -46,25 +46,24 @@ type InteractionEffect struct {
 type InteractionSystem struct {
     mu              sync.RWMutex
     ctx             *core.DaoContext
+    config          *InteractionConfig
     
-    // 基础系统引用
-    bagua           *basic.BaGua
-    wuXing          *basic.WuXing
-    timeSystem      *basic.TimeSystem
+    // 基础系统
+    bagua           *model.BaGua
+    wuXing          *model.WuXing
+    timeSystem      *TimeSystem
     
-    // 交互规则
-    rules           map[InteractionType][]InteractionRule
+    // 规则引擎
+    ruleEngine      *RuleEngine
+    effectProcessor *EffectProcessor
     
-    // 交互历史
-    history         []Interaction
+    // 监控和控制
+    state           SystemState
+    metrics         *InteractionMetrics
+    eventBus        *EventBus
     
-    // 效果缓存
-    effectCache     map[string]*InteractionEffect
-    
-    // 观察者
-    observers       []InteractionObserver
-    
-    // 控制通道
+    // 历史记录
+    history         *HistoryManager
     done            chan struct{}
 }
 
@@ -254,4 +253,18 @@ func (is *InteractionSystem) generateCacheKey(i *Interaction) string {
 // Close 关闭交互系统
 func (is *InteractionSystem) Close() {
     close(is.done)
+}
+
+// 新增规则引擎
+type RuleEngine struct {
+    rules    map[InteractionType][]Rule
+    cache    *RuleCache
+    matcher  *RuleMatcher
+}
+
+// 新增效果处理器
+type EffectProcessor struct {
+    handlers map[string]EffectHandler
+    queue    chan *Effect
+    workers  []*Worker
 }
