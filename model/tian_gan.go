@@ -39,6 +39,15 @@ type GanAttribute struct {
     Energy   uint8     // 能量值(0-100)
 }
 
+// 新增指标收集
+type Metrics struct {
+    CycleCount    uint64
+    StateChanges  uint64
+    ErrorCount    uint64
+    LastError     error
+    LastSuccess   time.Time
+}
+
 // TianGan 天干系统
 type TianGan struct {
     mu        sync.RWMutex
@@ -46,8 +55,20 @@ type TianGan struct {
     current   Gan
     wuxing    *WuXing
     ctx       *core.DaoContext
-    changes   chan Gan
-    done      chan struct{}
+    // 关联地支系统
+    diZhi       *DiZhi
+    ganZhiCycle struct {
+        sync.RWMutex
+        active     bool
+        position   int
+        lastUpdate time.Time
+    }
+    
+    // 监控和事件
+    metrics    *Metrics
+    observers  []Observer
+    changes    chan Gan
+    done       chan struct{}
 }
 
 // NewTianGan 创建天干系统
